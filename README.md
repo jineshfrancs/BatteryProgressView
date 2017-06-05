@@ -12,3 +12,9 @@ Add BatterProgressView to your layout
         android:layout_height="250dp"
          />
 ```
+Call setProgress() to set Progress on the view.
+
+```java
+progress= (BatteryProgressView) findViewById(R.id.progress);
+progress.setProgress(66);
+```
