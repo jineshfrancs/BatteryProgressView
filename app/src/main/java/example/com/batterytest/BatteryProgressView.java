@@ -30,7 +30,7 @@ public class BatteryProgressView extends View {
     private int innerCircleMargin=20;
     private RectF progressBounds;
     private int innerRadius,outerRadius;
-    private int progress=0,maxProgress=100,lastProgress=0,progressUpdate;
+    private float progress=0,maxProgress=100,lastProgress=0,progressUpdate;
     private boolean isFirstTime=true;
     private ValueAnimator animator;
     private static final String PERCENTAGE_TEXT="%";
@@ -171,18 +171,18 @@ public class BatteryProgressView extends View {
         post(new Runnable() {
             @Override
             public void run() {
-                int incr=360/maxProgress;
+                float incr=360/maxProgress;
                 Log.e("pogress","last:"+lastProgress+",progress:"+BatteryProgressView.this.progress);
                 if(lastProgress<BatteryProgressView.this.progress) {
                     Log.e("first",lastProgress+" to "+ (incr * (BatteryProgressView.this.progress))+":"+lastProgress);
-                    animator = ValueAnimator.ofInt(incr*lastProgress, incr * (BatteryProgressView.this.progress));
+                    animator = ValueAnimator.ofFloat(incr*lastProgress, incr * (BatteryProgressView.this.progress));
                     animator.setDuration(800);
                     animator.addUpdateListener(animatorUpdateListener);
                     animator.setInterpolator(new DecelerateInterpolator());
                     animator.start();
                 }else {
                     Log.e("second",lastProgress+" to "+ (incr * (BatteryProgressView.this.progress))+":"+lastProgress);
-                    animator = ValueAnimator.ofInt((incr*lastProgress), incr * (BatteryProgressView.this.progress));
+                    animator = ValueAnimator.ofFloat((incr*lastProgress), incr * (BatteryProgressView.this.progress));
                     animator.setDuration(800);
                     animator.addUpdateListener(animatorUpdateListener);
                     animator.setInterpolator(new DecelerateInterpolator());
@@ -210,12 +210,12 @@ public class BatteryProgressView extends View {
     ValueAnimator.AnimatorUpdateListener animatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
-            int update = (int) (animation.getAnimatedValue());
-            int incr=360/maxProgress;
-            int value=(update/incr);
+            float update = (float) (animation.getAnimatedValue());
+            float incr=360/maxProgress;
+            float value=(update/incr);
            // Log.e("update",value+"");
             progressUpdate=update;
-            progressText=value+"";
+            progressText=((int)value)+"";
             invalidate();
         }
     };
